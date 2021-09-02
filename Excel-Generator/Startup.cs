@@ -32,6 +32,11 @@ namespace Excel_Generator
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Excel_Generator", Version = "v1" });
             });
+
+            services.AddResponseCompression();
+            
+            // Add framework services.
+            services.AddMvc();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -41,7 +46,10 @@ namespace Excel_Generator
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Excel_Generator v1"));
+                app.UseSwaggerUI(c => {
+                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Excel_Generator v1");
+                    c.RoutePrefix = string.Empty;  // Set Swagger UI at apps root
+                });
             }
 
             app.UseHttpsRedirection();
